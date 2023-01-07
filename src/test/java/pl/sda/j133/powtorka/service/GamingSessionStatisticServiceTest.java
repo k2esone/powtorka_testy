@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 // Liczenie statystyki czasu:
 // - sredni czas gry @TODO DONE
-// - najdluzszy czas gry
-// - najkrotszy czas gry
+// - najdluzszy czas gry @TODO DONE
+// - najkrotszy czas gry @TODO DONE
 // - sredni czas gry z ostatnich 7 dni  @TODO DONE
 // - data i czas ostatniej sesji
 
@@ -67,7 +67,7 @@ class GamingSessionStatisticServiceTest {
 
         // TESTING
         int result = gamingSessionStatistics.calculateAverageTimeForGivenGameInSeconds(testUser, "fifa-01");
-assertEquals(4050, result); // session1 = 90min + session2 = 45min + 30 seconds / 135 * 60 = 8100
+assertEquals(4050, result); // (session1 = 90min + session2 = 45min + 30 seconds) / 2 sessions = 135/2 * 60 = 4050
 
     }
 
@@ -107,7 +107,7 @@ assertEquals(4050, result); // session1 = 90min + session2 = 45min + 30 seconds 
 
         // TESTING
 int result = gamingSessionStatistics.calculateAverageSessionTimeInTotalInSeconds(testUser);
-assertEquals(5125, result); // 90min + 45min + 120min = 255 * 60 = 15300 / 3 = 5100
+assertEquals(5125, result); // (90min + 45min + 120min + 75sec) / 3 sessions = 255 * 60 = 15300 / 3 = 5125
     }
 
     @Test
@@ -207,6 +207,106 @@ assertEquals(5125, result); // 90min + 45min + 120min = 255 * 60 = 15300 / 3 = 5
         int result = gamingSessionStatistics.calculateAverageSessionTimeInTotalInSecondsLast7Days(testUser);
         assertEquals(7415, result); // (90min + 160min + 120min + 45 sec) / 3 sessions = 7415
 
+    }
+
+    @Test
+    @DisplayName("Oblicza najdluzszy czas gry")
+    public void test_calculateLongestGameSession(){
+        User testUser = new User("irrevelant", "irrevelant");
+        testUser.setGamingSessions(new HashSet<>(
+                List.of(
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 1, 3, 0, 0),
+                                LocalDateTime.of(2023, 1, 1, 4, 30, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2022, 12, 28, 4, 55, 0),
+                                LocalDateTime.of(2022, 12, 28, 5, 40, 30),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 4, 7, 0, 0),
+                                LocalDateTime.of(2023, 1, 4, 9, 40, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 1, 6, 20, 0),
+                                LocalDateTime.of(2023, 1, 1, 8, 20, 45),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "metin-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2022, 12, 29, 2, 30, 0),
+                                LocalDateTime.of(2022, 12, 29, 5, 50, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "metin-01")
+                )
+        ));
+
+        //TESTING
+        int result = gamingSessionStatistics.calculateLongestGameSessionInSeconds(testUser);
+        assertEquals(12000, result);
+
+    }
+
+    @Test
+    @DisplayName("Oblicza najkrotszy czas gry")
+    public void test_calculateShortestGameSession(){
+        User testUser = new User("irrevelant", "irrevelant");
+        testUser.setGamingSessions(new HashSet<>(
+                List.of(
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 1, 3, 0, 0),
+                                LocalDateTime.of(2023, 1, 1, 4, 30, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2022, 12, 28, 4, 55, 0),
+                                LocalDateTime.of(2022, 12, 28, 5, 40, 30),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 4, 7, 0, 0),
+                                LocalDateTime.of(2023, 1, 4, 9, 40, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 1, 6, 20, 0),
+                                LocalDateTime.of(2023, 1, 1, 8, 20, 45),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "metin-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2022, 12, 29, 2, 30, 0),
+                                LocalDateTime.of(2022, 12, 29, 5, 50, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "metin-01")
+                )
+        ));
+
+        //TESTING
+
+        int result = gamingSessionStatistics.calculateShortestGameSessionInSeconds(testUser);
+        assertEquals(2730, result);
     }
 
 

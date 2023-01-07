@@ -31,4 +31,14 @@ public interface GamingSessionStatistics {
 
     public int calculateAverageSessionTimeInTotalInSecondsLast7Days(User user);
 
+    // Calculates the longest session in seconds.
+    // @param user - user with gaming sessions.
+    // @return longest session in seconds.
+    public int calculateLongestGameSessionInSeconds(User user);
+
+    // Calculates the shortest session in seconds.
+    // @param user - user with gaming sessions.
+    // @return shortest session in seconds.
+    public int calculateShortestGameSessionInSeconds(User user);
+
 }
