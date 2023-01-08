@@ -1,6 +1,7 @@
 package pl.sda.j133.powtorka.service;
 
 import pl.sda.j133.powtorka.model.User;
+import pl.sda.j133.powtorka.structs.GamingSessionTime;
 
 import java.time.LocalDateTime;
 
@@ -55,5 +56,29 @@ public interface GamingSessionStatistics {
     // @param user - user with gaming sessions.
     // @return average number of matches played in total
     public int calculateAverageMatchesPlayedInTotal(User user);
+
+    // Calculates average ratio win to lose for given game
+    // @param user - user with gaming sessions
+    // @param gameId - game to calculate average win to lose
+    // @return average number of game won
+    public int calculateAverageRatioWinToLoseForGivenGame(User user, String gameId);
+
+    // Calculates average ratio win to lose for games in total
+    // @param user - user with gaming sessions
+    // @return average number of game won in total
+    public int calculateAverageRatioWinToLoseInTotal(User user);
+
+
+
+
+
+
+
+
+    public int calculateAverageSessionTimeInLast7DaysSeconds(User user);
+
+    public LocalDateTime findLastSessionDateTime(User user);
+
+    public GamingSessionTime findLastSessionTimes(User user);
 
 }

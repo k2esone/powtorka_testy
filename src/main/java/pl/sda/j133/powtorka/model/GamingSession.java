@@ -3,6 +3,7 @@ package pl.sda.j133.powtorka.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,5 +20,9 @@ public class GamingSession {
     private String gameIdentifier;  // identyfikator gry do jej rozroznienia
                                     // fifa-01
                                     // cs-1.6-01
+
+    public long getSessionDuration() {
+        return Duration.between(timeStarted, timeFinished).getSeconds();
+    }
 
 }

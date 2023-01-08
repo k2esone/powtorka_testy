@@ -2,6 +2,7 @@ package pl.sda.j133.powtorka.service;
 
 import pl.sda.j133.powtorka.model.GamingSession;
 import pl.sda.j133.powtorka.model.User;
+import pl.sda.j133.powtorka.structs.GamingSessionTime;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -182,4 +183,73 @@ throw new IllegalArgumentException("No date and time, probably no sessions found
         return (int) averageMatches.getAsDouble();
 
     }
+
+    @Override
+    public int calculateAverageRatioWinToLoseForGivenGame(User user, String gameId) {
+        return 0;
+    }
+
+    @Override
+    public int calculateAverageRatioWinToLoseInTotal(User user) {
+        return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public int calculateAverageSessionTimeInLast7DaysSeconds(User user) {
+        OptionalDouble averageTime = user.getGamingSessions().stream()
+                .filter(gamingSession -> gamingSession.getTimeStarted().isAfter(LocalDateTime.now().minusDays(7)))
+                .mapToLong(session -> Duration.between(session.getTimeStarted(), session.getTimeFinished()).getSeconds())
+                .average();
+
+        if (averageTime.isEmpty()) {
+            throw new IllegalArgumentException("No average time, probably no sessions found");
+        }
+
+        return (int) averageTime.getAsDouble();
+    }
+
+    @Override
+    public LocalDateTime findLastSessionDateTime(User user) {
+//        GamingSession gamingSession = user.getGamingSessions().stream()
+//                .max(Comparator.comparing(GamingSession::getTimeStarted))
+//                .orElseThrow(() -> new IllegalArgumentException("No session found."));
+
+        Optional<GamingSession> gamingSessionOptional = user.getGamingSessions().stream()
+                .max(Comparator.comparing(GamingSession::getTimeStarted));
+
+        if (gamingSessionOptional.isEmpty()) {
+            throw new IllegalArgumentException("No session found.");
+        }
+
+        return gamingSessionOptional.get().getTimeStarted();
+    }
+
+    @Override
+    public GamingSessionTime findLastSessionTimes(User user) {
+        Optional<GamingSession> gamingSessionOptional = user.getGamingSessions().stream()
+                .max(Comparator.comparing(GamingSession::getTimeStarted));
+
+        if (gamingSessionOptional.isEmpty()) {
+            throw new IllegalArgumentException("No session found.");
+        }
+
+        GamingSession gamingSession = gamingSessionOptional.get();
+        return new GamingSessionTime(
+                gamingSession.getTimeStarted(),
+                gamingSession.getTimeFinished(),
+                Duration.between(gamingSession.getTimeStarted(), gamingSession.getTimeFinished()).getSeconds()
+        );
+    }
+
 }
