@@ -2,6 +2,8 @@ package pl.sda.j133.powtorka.service;
 
 import pl.sda.j133.powtorka.model.User;
 
+import java.time.LocalDateTime;
+
 public interface GamingSessionStatistics {
 
     // Calculates average session time for given game in seconds.
@@ -40,5 +42,7 @@ public interface GamingSessionStatistics {
     // @param user - user with gaming sessions.
     // @return shortest session in seconds.
     public int calculateShortestGameSessionInSeconds(User user);
+
+    public LocalDateTime dateAndTimeOfTheLatestSession(User user);
 
 }

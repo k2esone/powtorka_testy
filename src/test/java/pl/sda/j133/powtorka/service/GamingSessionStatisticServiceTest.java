@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 // - najdluzszy czas gry @TODO DONE
 // - najkrotszy czas gry @TODO DONE
 // - sredni czas gry z ostatnich 7 dni  @TODO DONE
-// - data i czas ostatniej sesji
+// - data i czas ostatniej sesji @TODO DONE
 
 // Liczenie statystyki rozegranych meczy:
 // - srednia ilosc rozegranych meczy
@@ -307,6 +307,55 @@ assertEquals(5125, result); // (90min + 45min + 120min + 75sec) / 3 sessions = 2
 
         int result = gamingSessionStatistics.calculateShortestGameSessionInSeconds(testUser);
         assertEquals(2730, result);
+    }
+
+    @Test
+    @DisplayName("Oblicza date i czas ostatniej sesji")
+    public void test_DateAndTimeOfLastSession(){
+        User testUser = new User("irrevelant", "irrevelant");
+        testUser.setGamingSessions(new HashSet<>(
+                List.of(
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 1, 3, 0, 0),
+                                LocalDateTime.of(2023, 1, 1, 4, 30, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2022, 12, 28, 4, 55, 0),
+                                LocalDateTime.of(2022, 12, 28, 5, 40, 30),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 4, 7, 0, 0),
+                                LocalDateTime.of(2023, 1, 4, 9, 40, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2023, 1, 1, 6, 20, 0),
+                                LocalDateTime.of(2023, 1, 1, 8, 20, 45),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "metin-01"),
+                        new GamingSession(
+                                LocalDateTime.of(2022, 12, 29, 2, 30, 0),
+                                LocalDateTime.of(2022, 12, 29, 5, 50, 0),
+                                0, // irrelevant
+                                0, // irrelevant
+                                0, // irrelevant
+                                "metin-01")
+                )
+        ));
+
+        //TESTING
+        LocalDateTime result = gamingSessionStatistics.dateAndTimeOfTheLatestSession(testUser);
+        assertEquals(LocalDateTime.of(2023,1,4,7,0,0), result);
     }
 
 

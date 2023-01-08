@@ -5,11 +5,10 @@ import pl.sda.j133.powtorka.model.User;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.OptionalDouble;
-import java.util.OptionalLong;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 public class GamingSessionStatisticService implements GamingSessionStatistics {
 
@@ -121,5 +120,26 @@ public class GamingSessionStatisticService implements GamingSessionStatistics {
         }
 
         return (int) longestSession.getAsLong();
+    }
+
+    @Override
+    public LocalDateTime dateAndTimeOfTheLatestSession(User user) {
+        List<GamingSession> sessions = user.getGamingSessions()
+                .stream()
+                .toList();
+
+        if (sessions.isEmpty()) {
+throw new IllegalArgumentException("No date and time, probably no sessions found");
+        }
+
+        LocalDateTime latestSessionDate = sessions.stream()
+                .map(GamingSession::getTimeStarted)
+                .max(LocalDateTime::compareTo)
+                .get();
+
+
+
+
+        return latestSessionDate;
     }
 }
