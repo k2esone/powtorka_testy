@@ -45,4 +45,15 @@ public interface GamingSessionStatistics {
 
     public LocalDateTime dateAndTimeOfTheLatestSession(User user);
 
+    // Calculates average number of matches played for given game
+    // @param user - user with gaming sessions.
+    // @param gameId - game to calculate games played
+    // @return average number of matches played for given game
+    public int calculateAverageMatchesPlayedForGivenGame(User user, String gameId);
+
+    // Calculates average number of matches played in total
+    // @param user - user with gaming sessions.
+    // @return average number of matches played in total
+    public int calculateAverageMatchesPlayedInTotal(User user);
+
 }

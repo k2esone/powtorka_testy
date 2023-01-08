@@ -5,10 +5,7 @@ import pl.sda.j133.powtorka.model.User;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 public class GamingSessionStatisticService implements GamingSessionStatistics {
 
@@ -132,14 +129,57 @@ public class GamingSessionStatisticService implements GamingSessionStatistics {
 throw new IllegalArgumentException("No date and time, probably no sessions found");
         }
 
-        LocalDateTime latestSessionDate = sessions.stream()
+        LocalDateTime latestSessionDateStart = sessions.stream()
                 .map(GamingSession::getTimeStarted)
                 .max(LocalDateTime::compareTo)
                 .get();
 
+        LocalDateTime latestSessionDateFinish = sessions.stream()
+                .map(GamingSession::getTimeFinished)
+                .max(LocalDateTime::compareTo)
+                .get();
+
+        long lenght = Duration.between(latestSessionDateStart, latestSessionDateFinish).getSeconds();
+        System.out.println("Czas ostatniej sesji wynosi: " + lenght + " sekund");
+
+        return latestSessionDateStart;
+    }
+
+    @Override
+    public int calculateAverageMatchesPlayedForGivenGame(User user, String gameId) {
+        List<GamingSession> sessions = user.getGamingSessions()
+                .stream()
+                .filter(session -> session.getGameIdentifier().equals(gameId))
+                .toList();
+
+        OptionalDouble averageMatches = sessions.stream()
+                .mapToLong(GamingSession::getMatchesPlayed)
+                .average();
+
+        if (averageMatches.isEmpty()) {
+            throw new IllegalArgumentException("No average matches, probably no sessions found");
+        }
+
+        return (int) averageMatches.getAsDouble();
 
 
+    }
 
-        return latestSessionDate;
+    @Override
+    public int calculateAverageMatchesPlayedInTotal(User user) {
+        List<GamingSession> sessions = user.getGamingSessions()
+                .stream()
+                .toList();
+
+        OptionalDouble averageMatches = sessions.stream()
+                .mapToLong(GamingSession::getMatchesPlayed)
+                .average();
+
+        if (averageMatches.isEmpty()) {
+            throw new IllegalArgumentException("No average matches, probably no sessions found");
+        }
+
+        return (int) averageMatches.getAsDouble();
+
     }
 }

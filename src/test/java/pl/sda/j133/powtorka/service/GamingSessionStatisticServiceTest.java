@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 // - data i czas ostatniej sesji @TODO DONE
 
 // Liczenie statystyki rozegranych meczy:
-// - srednia ilosc rozegranych meczy
+// - srednia ilosc rozegranych meczy @TODO DONE
 // - srednie ratio zwyciestw do porazek
 //      - okres 7 dni
 //      - okres od poczatku (wszystkie)
@@ -358,5 +358,102 @@ assertEquals(5125, result); // (90min + 45min + 120min + 75sec) / 3 sessions = 2
         assertEquals(LocalDateTime.of(2023,1,4,7,0,0), result);
     }
 
+    @Test
+    @DisplayName("Oblicza srednia ilosc rozegranych meczy dla danej gry")
+    public void test_calculateAverageMatchesPlayedForGivenGame(){
+        User testUser = new User("irrevelant", "irrevelant");
+        testUser.setGamingSessions(new HashSet<>(
+                List.of(
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0), // irrevelant
+                                23,
+                                15,
+                                8,
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                7,
+                                6,
+                                1,
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                36,
+                                11,
+                                25,
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                104,
+                                52,
+                                52,
+                                "metin-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                45,
+                                15,
+                                30,
+                                "metin-01")
+                )
+        ));
+
+        //TESTING
+        int result = gamingSessionStatistics.calculateAverageMatchesPlayedForGivenGame(testUser, "fifa-01");
+        assertEquals(22, result);
+    }
+
+    @Test
+    @DisplayName("Oblicza srednia ilosc rozegranych meczy dla wszystkich gier")
+    public void test_calculateAverageMatchesPlayedInTotal(){
+        User testUser = new User("irrevelant", "irrevelant");
+        testUser.setGamingSessions(new HashSet<>(
+                List.of(
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                23,
+                                15,
+                                8,
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                7,
+                                6,
+                                1,
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                36,
+                                11,
+                                25,
+                                "fifa-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                104,
+                                52,
+                                52,
+                                "metin-01"),
+                        new GamingSession(
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                LocalDateTime.of(1, 1, 1, 0, 0, 0), // irrevelant
+                                45,
+                                15,
+                                30,
+                                "metin-01")
+                )
+        ));
+
+        //TESTING
+        int result = gamingSessionStatistics.calculateAverageMatchesPlayedInTotal(testUser);
+        assertEquals(43, result);
+    }
 
 }
