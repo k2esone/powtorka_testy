@@ -33,6 +33,8 @@ class GamingSessionStatisticServiceTest {
 
     private final GamingSessionStatistics gamingSessionStatistics = new GamingSessionStatisticService();
 
+
+
     @Test
     @DisplayName("Oblicza sredni czas gry per wybrana gra")
     public void test_calculateAverageSessionTimeForGivenGame() {
@@ -70,7 +72,7 @@ class GamingSessionStatisticServiceTest {
 
         // TESTING
         int result = gamingSessionStatistics.calculateAverageTimeForGivenGameInSeconds(testUser, "fifa-01");
-        assertEquals(4065, result); // (session1 = 90min + session2 = 45min + 30 seconds) / 2 sessions = 135/2 * 60 = 4050
+        assertEquals(4065, result); // (session1 = 90min + session2 = 45min + 30 seconds) / 2 sessions = 135/2 * 60 = 4065
 
     }
 
